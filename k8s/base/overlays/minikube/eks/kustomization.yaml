@@ -1,0 +1,32 @@
+# ${APP_ROLE_ARN}, ${BUCKET_NAME}, ${AWS_REGION} are filled in by `make deploy ENV=eks`.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+  - ingress.yaml
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: app
+        namespace: app
+        annotations:
+          eks.amazonaws.com/role-arn: "${APP_ROLE_ARN}"
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: app
+        namespace: app
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                imagePullPolicy: Always
+                env:
+                  - name: BUCKET_NAME
+                    value: "${BUCKET_NAME}"
+                  - name: AWS_REGION
+                    value: "${AWS_REGION}"

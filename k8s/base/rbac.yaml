@@ -1,0 +1,24 @@
+# The app may read ConfigMaps in its own namespace, nothing else. Used by /k8s.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-read-config
+  namespace: app
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-read-config
+  namespace: app
+subjects:
+  - kind: ServiceAccount
+    name: app
+    namespace: app
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: app-read-config
