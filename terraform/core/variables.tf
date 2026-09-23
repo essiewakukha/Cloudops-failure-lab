@@ -5,11 +5,11 @@ variable "region" {
 
 variable "name" {
   type    = string
-  default = "break-fix-lab"
+  default = "Cloudops-failure-lab"
 }
 
 variable "github_repo" {
   description = "Optional 'owner/repo' to enable GitHub Actions OIDC. Leave empty to skip."
   type        = string
-  default     = ""
+  default     = "https://github.com/essiewakukha/Cloudops-failure-lab"
 }
